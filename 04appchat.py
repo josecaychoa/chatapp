@@ -6,7 +6,7 @@ import os
 
 # ✅ Configura tu API Key de OpenAI
 load_dotenv()
-openai.api_key = st.secrets("OPEN_API_KEY")
+openai.api_key = st.secrets["OPEN_API_KEY"]
 
 # Inicializar el historial de chat en el estado de sesión
 if "historial" not in st.session_state:
@@ -57,4 +57,5 @@ if st.session_state.historial:
     st.markdown("### 🗨️ Historial de conversación")
     for autor, mensaje in st.session_state.historial:
         st.markdown(f"**{autor}:** {mensaje}")
+
 
