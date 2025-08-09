@@ -1,4 +1,4 @@
-mport streamlit as st
+import streamlit as st
 import openai
 from PIL import Image
 
@@ -54,4 +54,5 @@ if st.session_state.historial:
     st.markdown("### 🗨️ Historial de conversación")
     for autor, mensaje in st.session_state.historial:
         st.markdown(f"**{autor}:** {mensaje}")
+
 
