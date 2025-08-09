@@ -1,2 +1,0 @@
-streamlist
-openai==0.28
