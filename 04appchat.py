@@ -1,9 +1,11 @@
 import streamlit as st
 import openai
 from PIL import Image
+from dotenv import load_dotenv
 
 # ✅ Configura tu API Key de OpenAI
-openai.api_key = "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"  # ← Reemplaza esto con tu clave real
+load_dotenv()
+openai.api_key = os.getenv("OPEN_API_KEY")
 
 # Inicializar el historial de chat en el estado de sesión
 if "historial" not in st.session_state:
@@ -54,6 +56,7 @@ if st.session_state.historial:
     st.markdown("### 🗨️ Historial de conversación")
     for autor, mensaje in st.session_state.historial:
         st.markdown(f"**{autor}:** {mensaje}")
+
 
 
 
