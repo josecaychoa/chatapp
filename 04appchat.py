@@ -10,7 +10,7 @@ if "historial" not in st.session_state:
     st.session_state.historial = []
 
 # 📋 Barra lateral
-st.sidebar.title("Opciones del Asistente de Viajes")
+st.sidebar.title("Opciones del Asistente de Viajes es 5 pero en realidad 4")
 
 # 🎚️ Slider para nivel de detalle
 detalle = st.sidebar.slider("Nivel de detalle", min_value=1, max_value=10, value=5)
@@ -54,5 +54,6 @@ if st.session_state.historial:
     st.markdown("### 🗨️ Historial de conversación")
     for autor, mensaje in st.session_state.historial:
         st.markdown(f"**{autor}:** {mensaje}")
+
 
 
