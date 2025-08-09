@@ -2,6 +2,7 @@ import streamlit as st
 import openai
 from PIL import Image
 from dotenv import load_dotenv
+import os
 
 # ✅ Configura tu API Key de OpenAI
 load_dotenv()
@@ -56,6 +57,7 @@ if st.session_state.historial:
     st.markdown("### 🗨️ Historial de conversación")
     for autor, mensaje in st.session_state.historial:
         st.markdown(f"**{autor}:** {mensaje}")
+
 
 
 
