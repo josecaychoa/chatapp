@@ -10,7 +10,7 @@ if "historial" not in st.session_state:
     st.session_state.historial = []
 
 # 📋 Barra lateral
-st.sidebar.title("Opciones del Asistente de Viajes es 5 pero en realidad 4")
+st.sidebar.title("Opciones del Asistente de Viajes")
 
 # 🎚️ Slider para nivel de detalle
 detalle = st.sidebar.slider("Nivel de detalle", min_value=1, max_value=10, value=5)
@@ -20,7 +20,7 @@ if st.sidebar.button("🗑️ Borrar historial"):
     st.session_state.historial = []
 
 # 🧳 Título principal
-st.title("🧳 Chat de Viajes con OpenAI")
+st.title("🧳 Chat de Viajes con OpenAI-Es 5 pero debe ser 4")
 
 # 📷 Mostrar imagen precargada al iniciar
 try:
@@ -54,6 +54,7 @@ if st.session_state.historial:
     st.markdown("### 🗨️ Historial de conversación")
     for autor, mensaje in st.session_state.historial:
         st.markdown(f"**{autor}:** {mensaje}")
+
 
 
 
