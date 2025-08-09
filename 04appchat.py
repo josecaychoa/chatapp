@@ -1,47 +1,57 @@
+mport streamlit as st
 import openai
-import openai
-import tkinter as tk
-from tkinter import scrolledtext
+from PIL import Image
 
-# ✅ Tu API Key de OpenAI
+# ✅ Configura tu API Key de OpenAI
 openai.api_key = "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"  # ← Reemplaza esto con tu clave real
 
-# Función para enviar mensaje a OpenAI
-def enviar_mensaje():
-    mensaje_usuario = entrada.get()
-    if not mensaje_usuario.strip():
-        return
+# Inicializar el historial de chat en el estado de sesión
+if "historial" not in st.session_state:
+    st.session_state.historial = []
 
-    chat_box.insert(tk.END, "Tú: " + mensaje_usuario + "\n")
-    entrada.delete(0, tk.END)
+# 📋 Barra lateral
+st.sidebar.title("Opciones del Asistente de Viajes")
 
-    try:
-        respuesta = openai.chat.completions.create(
-            model="gpt-4",
-            messages=[
-                {"role": "system", "content": "Eres un asistente de viajes útil que ayuda a planificar vacaciones, recomendar destinos, y dar consejos sobre presupuestos y clima."},
-                {"role": "user", "content": mensaje_usuario}
-            ]
-        )
-        respuesta_texto = respuesta.choices[0].message.content
-        chat_box.insert(tk.END, "Asistente: " + respuesta_texto + "\n")
-    except Exception as e:
-        chat_box.insert(tk.END, "Error: " + str(e) + "\n")
+# 🎚️ Slider para nivel de detalle
+detalle = st.sidebar.slider("Nivel de detalle", min_value=1, max_value=10, value=5)
 
-# Crear ventana principal
-ventana = tk.Tk()
-ventana.title("Chat de Viajes con OpenAI")
+# 🗑️ Botón para borrar historial
+if st.sidebar.button("🗑️ Borrar historial"):
+    st.session_state.historial = []
 
-# Crear caja de chat
-chat_box = scrolledtext.ScrolledText(ventana, wrap=tk.WORD, width=60, height=20)
-chat_box.pack(padx=10, pady=10)
+# 🧳 Título principal
+st.title("🧳 Chat de Viajes con OpenAI")
 
-# Entrada de texto
-entrada = tk.Entry(ventana, width=50)
-entrada.pack(padx=10, pady=5)
+# 📷 Mostrar imagen precargada al iniciar
+try:
+    imagen_precargada = Image.open("imagen_viaje.jpg")
+    st.image(imagen_precargada, caption="Imagen de inspiración para tu viaje", use_container_width=True)
+except FileNotFoundError:
+    st.warning("No se encontró la imagen 'imagen_viaje.jpg'. Asegúrate de que esté en el mismo directorio que el script.")
 
-# Botón de enviar
-boton_enviar = tk.Button(ventana, text="Enviar", command=enviar_mensaje)
-boton_enviar.pack(pady=5)
+# 💬 Entrada de texto
+pregunta = st.text_input("¿A dónde te gustaría viajar o qué necesitas planear?")
 
-ventana.mainloop()
+# 🚀 Botón para enviar
+if st.button("Enviar") and pregunta:
+    with st.spinner("Consultando al asistente de viajes..."):
+        try:
+            respuesta = openai.chat.completions.create(
+                model="gpt-4",
+                messages=[
+                    {"role": "system", "content": f"Eres un asistente de viajes útil. Responde con nivel de detalle {detalle}/10."},
+                    {"role": "user", "content": pregunta}
+                ]
+            )
+            contenido = respuesta.choices[0].message.content
+            st.session_state.historial.append(("Tú", pregunta))
+            st.session_state.historial.append(("Asistente", contenido))
+        except Exception as e:
+            st.error(f"Error al conectar con OpenAI: {e}")
+
+# 🗨️ Mostrar historial de conversación
+if st.session_state.historial:
+    st.markdown("### 🗨️ Historial de conversación")
+    for autor, mensaje in st.session_state.historial:
+        st.markdown(f"**{autor}:** {mensaje}")
+
